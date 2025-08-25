@@ -14,7 +14,7 @@ const identityAPI = "https://aerospike.brivas.io/api/identity"; // Identity API 
 const emailExists = async (email) => {
   const response = await axios.get(`${identityAPI}/check`, {
     params: { email },
-    headers: { "x-app-name": "vitess" },
+    headers: { "x-app-name": "ecommerce" },
   });
   return response.data.exists;
 };
