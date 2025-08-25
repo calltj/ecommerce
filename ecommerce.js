@@ -8,12 +8,13 @@ app.use(express.json());
 
 let mysqlConn;
 
-const identityAPI = "http://localhost:5000";
+const identityAPI = "https://aerospike.brivas.io/api/identity"; // Identity API URL
 
 // Check email existence
 const emailExists = async (email) => {
   const response = await axios.get(`${identityAPI}/check`, {
     params: { email },
+    headers: { "x-app-name": "vitess" },
   });
   return response.data.exists;
 };
@@ -34,7 +35,7 @@ app.post("/signup", async (req, res) => {
 
     try {
       await axios.post(
-        `${identityAPI}/identity`,
+        identityAPI,
         { user },
         { headers: { "x-app-name": "ecommerce" } }
       );
@@ -63,8 +64,8 @@ app.post("/login", async (req, res) => {
 
   try {
     const response = await axios.post(
-      `${identityAPI}/auth`,
-      { email },
+      identityAPI,
+      { user: { email } },
       { headers: { "x-app-name": "ecommerce" } }
     );
     res.json({ user: response.data.user });
@@ -77,7 +78,7 @@ app.post("/login", async (req, res) => {
 app.get("/profile/:email", async (req, res) => {
   try {
     const response = await axios.post(
-      `${identityAPI}/identity`,
+      identityAPI,
       { user: { email: req.params.email } },
       { headers: { "x-app-name": "ecommerce" } }
     );
@@ -98,7 +99,7 @@ app.put("/update-profile", async (req, res) => {
 
   try {
     await axios.post(
-      `${identityAPI}/identity`,
+      identityAPI,
       { user: { userId, name, age, app: "ecommerce" } },
       { headers: { "x-app-name": "ecommerce" } }
     );
