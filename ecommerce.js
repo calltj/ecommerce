@@ -42,7 +42,9 @@ app.post("/signup", async (req, res) => {
     } catch (axiosError) {
       console.error(
         "AXIOS ERROR:",
-        axiosError.response?.data || axiosError.message
+        axiosError.response?.data || axiosError.message,
+        axiosError.response?.status,
+        axiosError.response?.headers
       );
       return res.status(500).json({
         error: "Request failed",
